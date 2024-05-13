@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+      }
+      button {
+        width: 25%;
+        height: 100px;
+        font-size: 20px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="decrement" disabled>Previous</button>
+    <button id="toggle">Play/Pause</button>
+    <button id="playCurrent">Play Current</button>
+    <button id="increment">Next</button>
+    <button onclick="toggleFullScreen()">Go Fullscreen</button>
+
+    <script>
+      function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
+        }
+      }
+      let audioIndex = 0;
+      const audio = new Audio(`${audioIndex}.mp3`);
+
+      document.getElementById("toggle").addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+
+      document.getElementById("playCurrent").addEventListener("click", () => {
+        audio.src = `${audioIndex}.mp3`;
+        audio.play();
+      });
+
+      document.getElementById("increment").addEventListener("click", () => {
+        if (audioIndex < 134) {
+          audioIndex++;
+          audio.src = `${audioIndex}.mp3`;
+          audio.play();
+          if (audioIndex === 134) {
+            document.getElementById("increment").disabled = true;
+          }
+          if (audioIndex > 0) {
+            document.getElementById("decrement").disabled = false;
+          }
+        }
+      });
+
+      document.getElementById("decrement").addEventListener("click", () => {
+        if (audioIndex > 0) {
+          audioIndex--;
+          audio.src = `${audioIndex}.mp3`;
+          audio.play();
+          if (audioIndex === 0) {
+            document.getElementById("decrement").disabled = true;
+          }
+          if (audioIndex < 134) {
+            document.getElementById("increment").disabled = false;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
